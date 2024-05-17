@@ -22,6 +22,10 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
             +"PRICE REAL,"
             +"PAGES INTEGER,"
             +"NAME TEXT);";
+    public static final String CREATE_CATEGORY = "CREATE TABLE CATEGORY("
+            +"ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+            +"CATEGORY_NAME TEXT,"
+            +"CATEGORY_CODE INTEGER);";
     private Context mContext;
 
     public MyDataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,int version)
@@ -32,12 +36,15 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_BOOK);
+        db.execSQL(CREATE_BOOK);//数据库创建的同时，执行SQL语句创建数据表BOOK
+        db.execSQL(CREATE_CATEGORY);
         Toast.makeText(mContext, "Create Succeeded", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("drop table if exists BOOK");
+        db.execSQL("drop table if exists CATEGORY");
+        onCreate(db);
     }
 }
